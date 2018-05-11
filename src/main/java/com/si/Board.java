@@ -19,7 +19,7 @@ public class Board {
         return board;
     }
 
-    public void initializeBoard(){
+    private void initializeBoard(){
         for (int i = 0; i < N; i++){
             for (int j = 0; j < N; j++){
                 board[i][j] = false;
@@ -27,7 +27,7 @@ public class Board {
         }
     }
 
-    public void initializeControl(){
+    private void initializeControl(){
         for (int i = 0; i < N; i++){
             rowControl[i] = 0;
             columnControl[i] = 0;
@@ -35,7 +35,7 @@ public class Board {
     }
 
     public int putAndGetNewPoints(int x, int y){//zwraca punkty
-        if (board[x][y] == true){
+        if (board[x][y]){
             System.out.println("Pole zajęte");///////////////////////////////Drukowanie tutaj to słąby pomysł
             return -1;                          ///////////////////////////////Taka obsługa błędu to nienajlepszy pomysł
         }
@@ -46,7 +46,7 @@ public class Board {
     }
 
 
-    private int getPoints(int x, int y) {
+    public int getPoints(int x, int y) {
         int points = 0;
 
         if (rowControl[y] == N){ // tylko tutaj dostaje się pkt za narożniki
@@ -55,13 +55,12 @@ public class Board {
         if (columnControl[x] == N){ // tylko tutaj dostaje się pkt za narożniki
             points += N;
         }
-        points += checkDiagonals(x, y);
-
+        points += getDiagonalsPoints(x, y);
 
         return points;
     }
 
-    private int checkDiagonals(int x, int y) { // tutaj ma nie być pkt za sam narożnik
+    private int getDiagonalsPoints(int x, int y) { // tutaj ma nie być pkt za sam narożnik
         int points = 0;
         boolean lowDiagonal = true;
         int lowDiagonalPoinjts = 1;

@@ -17,16 +17,23 @@ public class Player {
         this.points += pointsToAdd;
     }
 
-    public void move(int x, int y){
-        int points = board.putAndGetNewPoints(x, y);
-        if(points == 0){
-            System.out.println("Ruch niepunktowany");
+    public int move(int x, int y){
+        if (x < board.getSize() && x >= 0 && y < board.getSize() && y >= 0) { // Wartości z zakresu
+            int points = board.putAndGetNewPoints(x, y);
+            if (points == 0) { // Ruch niepunktowany
+                return 0;
+            } else if (points > 0) { // Punkty dodane
+                addPoints(points);
+                return 1;
+            } else if (points < 0) {// Pole zajęte
+                return 2;
+            } else {
+                return 3;
+            }
         }
-        else if (points > 0){
-            addPoints(points);
+        else{ // Wartości spoza zakresu
+            return 4;
         }
-        if(points < 0){
-            System.out.println("Coś poszło nie tak, Menager.move(" + x + ", " + y + ")");
-        }
+
     }
 }

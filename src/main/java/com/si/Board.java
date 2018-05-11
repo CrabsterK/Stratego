@@ -31,6 +31,10 @@ public class Board {
         }
     }
 
+    public boolean fieldEmpty(int x, int y){
+        return (!board[x][y]);
+    }
+
     private void initializeControl(){
         for (int i = 0; i < N; i++){
             rowControl[i] = 0;

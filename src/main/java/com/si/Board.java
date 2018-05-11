@@ -19,6 +19,10 @@ public class Board {
         return board;
     }
 
+    public int getSize(){
+        return N;
+    }
+
     private void initializeBoard(){
         for (int i = 0; i < N; i++){
             for (int j = 0; j < N; j++){
@@ -34,10 +38,21 @@ public class Board {
         }
     }
 
+    public boolean isFull(){
+        boolean isFull = true;
+        for (int i = 0; i < N; i++){
+            for (int j = 0; j < N; j++){
+                if(!board[i][j]){
+                    isFull = false;
+                }
+            }
+        }
+        return isFull;
+    }
+
     public int putAndGetNewPoints(int x, int y){//zwraca punkty
         if (board[x][y]){
-            System.out.println("Pole zajęte");///////////////////////////////Drukowanie tutaj to słąby pomysł
-            return -1;                          ///////////////////////////////Taka obsługa błędu to nienajlepszy pomysł
+          return -1;                          ///////////////////////////////Taka obsługa błędu to nienajlepszy pomysł
         }
         board[x][y] = true;
         rowControl[y]++;
@@ -46,7 +61,7 @@ public class Board {
     }
 
 
-    public int getPoints(int x, int y) {
+    public int getPoints(int x, int y) { //to nie działa tak fajnie jeśli tylko chcemy sprawdzić ile byśmy dostali. Można wstawiać gdzie już jest i pokazuje ile za to pkt
         int points = 0;
 
         if (rowControl[y] == N){ // tylko tutaj dostaje się pkt za narożniki

@@ -1,13 +1,15 @@
 package com.si;
 
+import com.si.player.Player;
+
 import java.util.Scanner;
 
 public class PersonVsPerson {
-    final int BOARD_SIZE;
-    Board board;
-    Player player1;
-    Player player2;
-    Scanner sc;
+    private final int BOARD_SIZE;
+    private Board board;
+    private Player player1;
+    private Player player2;
+    private Scanner sc;
 
     public PersonVsPerson(int n){
         BOARD_SIZE = n;

@@ -1,6 +1,8 @@
-package com.si;
+package com.si.player;
 
-public class Player {
+import com.si.Board;
+
+public class Player implements PlayerI{
     public int points;
     public Board board;
 

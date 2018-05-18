@@ -139,6 +139,6 @@ public class Board {
             }
             matrix += "\n";
         }
-        System.out.println(matrix);
+        System.out.print(matrix);
     }
 }

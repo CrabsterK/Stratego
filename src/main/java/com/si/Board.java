@@ -123,7 +123,34 @@ public class Board {
         return points;
     }
 
+    public int getNumberOfEmptyFields(){
+        int emptyFields = 0;
+        boolean isFull = true;
+        for (int i = 0; i < N; i++){
+            for (int j = 0; j < N; j++){
+                if(!board[i][j]){
+                    emptyFields++;
+                }
+            }
+        }
+        return emptyFields;
+    }
 
+
+    public int[][] getEmptyFields(){
+        int[][] emptyFields = new int[getNumberOfEmptyFields()][2];
+        int counter = 0;
+        for (int i = 0; i < N; i++){
+            for (int j = 0; j < N; j++){
+                if(!board[i][j]){
+                    emptyFields[counter][0] = i;
+                    emptyFields[counter][1] = j;
+                    counter++;
+                }
+            }
+        }
+        return emptyFields;
+    }
 
 
     public void print() {

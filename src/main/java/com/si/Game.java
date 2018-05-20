@@ -1,5 +1,6 @@
 package com.si;
 
+import com.si.player.AlphaBetaPlayer;
 import com.si.player.HumanPlayer;
 import com.si.player.MinMaxPlayer;
 import com.si.player.Player;
@@ -46,6 +47,9 @@ public class Game {
                     if (player1 instanceof MinMaxPlayer){
                         ((MinMaxPlayer) player1).move();
                     }
+                    if (player1 instanceof AlphaBetaPlayer){
+                        ((AlphaBetaPlayer) player1).move();
+                    }
                     if (player1 instanceof HumanPlayer){
                         System.out.println("x: ");
                         int playerX = sc.nextInt();
@@ -59,6 +63,9 @@ public class Game {
                     errorCode = 99;
                     if (player2 instanceof MinMaxPlayer) {
                         ((MinMaxPlayer) player2).move();
+                    }
+                    if (player2 instanceof AlphaBetaPlayer){
+                        ((AlphaBetaPlayer) player2).move();
                     }
                     if (player2 instanceof HumanPlayer) {
                         System.out.println("x: ");
@@ -104,6 +111,11 @@ public class Game {
                     g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
                     g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
                 }
+                if (player1 instanceof AlphaBetaPlayer) {
+                    toMark = ((AlphaBetaPlayer) player1).move();//move już go kłądzie
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+                }
                 if (player1 instanceof HumanPlayer) {
                     ((HumanPlayer) player1).move(positions[0], positions[1]);
                 }
@@ -111,6 +123,11 @@ public class Game {
             } else {
                 if (player2 instanceof MinMaxPlayer) {
                     toMark = ((MinMaxPlayer) player2).move();
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+                }
+                if (player2 instanceof AlphaBetaPlayer) {
+                    toMark = ((AlphaBetaPlayer) player2).move();
                     g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
                     g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
                 }

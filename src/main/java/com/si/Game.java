@@ -9,14 +9,14 @@ import java.awt.*;
 import java.util.Scanner;
 
 public class Game {
-    Player player1;
-    Player player2;
+    private Player player1;
+    private Player player2;
     private final int BOARD_SIZE;
     private Board board;
     private boolean enableGui;
     private boolean player1MoveFirst;
-    GameWindow g;
-    Scanner sc;
+    private GameWindow g;
+    private Scanner sc;
 
     public Game(Player player1, Player player2, int BOARD_SIZE, Board board, boolean enableGui, boolean player1MoveFirst) {
         this.player1 = player1;
@@ -29,6 +29,14 @@ public class Game {
         this.player1MoveFirst = player1MoveFirst;
         this.g = g;
         sc = new Scanner(System.in);
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
     }
 
     private void run() { //no gui play
@@ -117,6 +125,7 @@ public class Game {
                     g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
                 }
                 if (player1 instanceof HumanPlayer) {
+                    System.out.println("pl1");
                     ((HumanPlayer) player1).move(positions[0], positions[1]);
                 }
 
@@ -132,50 +141,22 @@ public class Game {
                     g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
                 }
                 if (player2 instanceof HumanPlayer) {
+                    System.out.println("pl2");
                     ((HumanPlayer) player2).move(positions[0], positions[1]);
                 }
             }
             player1MoveFirst = !player1MoveFirst;
-            if (!board.isFull() && goAll){// działa tylko jeśli pierwszy ruch to human
-                goAll = false;
-                run(positions);
+            if (!(player1 instanceof HumanPlayer && player2 instanceof HumanPlayer)) {
+                if (!board.isFull() && goAll) {// działa tylko jeśli pierwszy ruch to human
+                    goAll = false;
+                    run(positions);
+                }
             }
             goAll = true;
             board.print();
             System.out.println("pkt1: " + player1.getPoints());
             System.out.println("pkt2: " + player2.getPoints());
             System.out.println();
-
-
-
-
-
-      /*  int[] toMark;
-        if (player1MoveFirst){
-            if (player1 instanceof MinMaxPlayer) {
-                toMark = ((MinMaxPlayer) player1).move();//move już go kłądzie
-                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
-                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
-            }
-            if (player1 instanceof HumanPlayer) {
-                ((HumanPlayer) player1).move(positions[0], positions[1]);
-            }
-        }
-        else {
-            if (player2 instanceof MinMaxPlayer) {
-                toMark = ((MinMaxPlayer) player2).move();
-                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
-                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
-            }
-            if (player2 instanceof HumanPlayer) {
-                ((HumanPlayer) player2).move(positions[0], positions[1]);
-            }
-        }
-        player1MoveFirst = !player1MoveFirst;
-        board.print();
-        System.out.println("pkt1: " + player1.getPoints());
-        System.out.println("pkt2: " + player2.getPoints());
-        System.out.println();*/
     }
 
     public void runMvsM() {//to wywołuję z gui

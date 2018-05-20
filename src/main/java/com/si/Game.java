@@ -178,6 +178,69 @@ public class Game {
         }
     }
 
+    public void runABvsAB() {//to wywołuję z gui
+        while (!board.isFull()) {
+            int[] toMark;
+            if(player1MoveFirst) {
+                toMark = ((AlphaBetaPlayer) player1).move();//move już go kłądzie
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            else {
+                toMark = ((AlphaBetaPlayer) player2).move();
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            player1MoveFirst = !player1MoveFirst;
+            board.print();
+            System.out.println("pkt1: " + player1.getPoints());
+            System.out.println("pkt2: " + player2.getPoints());
+            System.out.println();
+        }
+    }
+
+    public void runABvsM() {//to wywołuję z gui
+        while (!board.isFull()) {
+            int[] toMark;
+            if(player1MoveFirst) {
+                toMark = ((AlphaBetaPlayer) player1).move();//move już go kłądzie
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            else {
+                toMark = ((MinMaxPlayer) player2).move();
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            player1MoveFirst = !player1MoveFirst;
+            board.print();
+            System.out.println("pkt1: " + player1.getPoints());
+            System.out.println("pkt2: " + player2.getPoints());
+            System.out.println();
+        }
+    }
+
+    public void runMvsAB() {//to wywołuję z gui
+        while (!board.isFull()) {
+            int[] toMark;
+            if(player1MoveFirst) {
+                toMark = ((MinMaxPlayer) player1).move();//move już go kłądzie
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            else {
+                toMark = ((AlphaBetaPlayer) player2).move();
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            player1MoveFirst = !player1MoveFirst;
+            board.print();
+            System.out.println("pkt1: " + player1.getPoints());
+            System.out.println("pkt2: " + player2.getPoints());
+            System.out.println();
+        }
+    }
+
     public void runGame() {
         if (enableGui){
             g = new GameWindow("Game", BOARD_SIZE, this);
@@ -185,6 +248,15 @@ public class Game {
             g.setSize(500, 500);
             if (player1 instanceof MinMaxPlayer && player2 instanceof MinMaxPlayer) {
                 runMvsM();
+            }
+            if (player1 instanceof AlphaBetaPlayer && player2 instanceof AlphaBetaPlayer) {
+                runABvsAB();
+            }
+            if (player1 instanceof AlphaBetaPlayer && player2 instanceof MinMaxPlayer) {
+                runABvsM();
+            }
+            if (player1 instanceof MinMaxPlayer && player2 instanceof AlphaBetaPlayer) {
+                runMvsAB();
             }
         }
         else {

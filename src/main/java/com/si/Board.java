@@ -31,10 +31,6 @@ public class Board {
         }
     }
 
-    public boolean fieldEmpty(int x, int y){
-        return (!board[x][y]);
-    }
-
     private void initializeControl(){
         for (int i = 0; i < N; i++){
             rowControl[i] = 0;
@@ -54,9 +50,9 @@ public class Board {
         return isFull;
     }
 
-    public int putAndGetNewPoints(int x, int y){//zwraca punkty
+    public int putAndGetNewPoints(int x, int y){// zwraca punkty
         if (board[x][y]){
-          return -1;                          ///////////////////////////////Taka obsługa błędu to nienajlepszy pomysł
+          return -1;                          // Taka obsługa błędu to nienajlepszy pomysł
         }
         board[x][y] = true;
         rowControl[y]++;
@@ -64,10 +60,8 @@ public class Board {
         return getPoints(x, y);
     }
 
-
     public int getPoints(int x, int y) { //to nie działa tak fajnie jeśli tylko chcemy sprawdzić ile byśmy dostali. Można wstawiać gdzie już jest i pokazuje ile za to pkt
         int points = 0;
-
         if (rowControl[y] == N){ // tylko tutaj dostaje się pkt za narożniki
             points += N;
         }
@@ -75,7 +69,6 @@ public class Board {
             points += N;
         }
         points += getDiagonalsPoints(x, y);
-
         return points;
     }
 
@@ -96,7 +89,6 @@ public class Board {
             }
         }
 
-
         boolean higihDiagonal = true;
         int highDiagonalPoinjts = 1;
         for(int i = x+1, j = y-1; i < N && j >= 0; i++, j--) { //SW
@@ -112,20 +104,17 @@ public class Board {
             }
         }
 
-
         if(lowDiagonal && lowDiagonalPoinjts > 1){
             points += lowDiagonalPoinjts;
         }
         if(higihDiagonal && highDiagonalPoinjts > 1){
             points += highDiagonalPoinjts;
         }
-
         return points;
     }
 
     public int getNumberOfEmptyFields(){
         int emptyFields = 0;
-        boolean isFull = true;
         for (int i = 0; i < N; i++){
             for (int j = 0; j < N; j++){
                 if(!board[i][j]){
@@ -135,7 +124,6 @@ public class Board {
         }
         return emptyFields;
     }
-
 
     public int[][] getEmptyFields(){
         int[][] emptyFields = new int[getNumberOfEmptyFields()][2];
@@ -151,7 +139,6 @@ public class Board {
         }
         return emptyFields;
     }
-
 
     public void print() {
         String matrix = "";

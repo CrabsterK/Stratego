@@ -10,14 +10,17 @@ public class HumanPlayer extends Player {
         this.points = 0;
     }
 
+    @Override
     public void setBoard(Board board){
         this.board = board;
     }
 
+    @Override
     public int getPoints(){
         return points;
     }
 
+    @Override
     public void addPoints(int pointsToAdd){
         this.points += pointsToAdd;
     }
@@ -39,6 +42,5 @@ public class HumanPlayer extends Player {
         else{ // Wartości spoza zakresu
             return 4;
         }
-
     }
 }

@@ -31,16 +31,16 @@ public class AlphaBetaPlayer extends Player{
 
     private int[] alphaBeta() {
         int best[] = new int[2];
-        int maxValue = Integer.MIN_VALUE;
-        int aRoot = Integer.MIN_VALUE;
-        int bRoot = Integer.MAX_VALUE;
+        int bestMaxValue = Integer.MIN_VALUE;
+        int alpha = Integer.MIN_VALUE;
+        int beta = Integer.MAX_VALUE;
         int[][] emptyFields = board.getEmptyFields();
         for (int i = 0; i < emptyFields.length; i++){
             board.getBoard()[emptyFields[i][0]][emptyFields[i][1]] = true;
-            int nodeValue = board.getPoints(emptyFields[i][0], emptyFields[i][1]);
-            int value = minValue(depthUse - 1, nodeValue, 0, aRoot, bRoot);
-            if (value > maxValue) {
-                maxValue = value;
+            int currentNodeVal = board.getPoints(emptyFields[i][0], emptyFields[i][1]);
+            int tmpValue = minValue(depthUse - 1, currentNodeVal, 0, alpha, beta);
+            if (tmpValue > bestMaxValue) {
+                bestMaxValue = tmpValue;
                 best[0] = emptyFields[i][0];
                 best[1] = emptyFields[i][1];
             }
@@ -50,65 +50,58 @@ public class AlphaBetaPlayer extends Player{
         return best;
     }
 
-    private int maxValue(int maxDepth, int playerScore, int enemyScore, int aRoot, int bRoot) {
+    private int maxValue(int maxDepth, int player1points, int player2points, int alpha, int beta) {
         if (maxDepth == 0 ||  board.isFull()) {
-            return playerScore - enemyScore;
+            return player1points - player2points;
         }
-        int a = aRoot;
-        int b = bRoot;
-        int maxValue = Integer.MIN_VALUE;
+        int bestMaxValue = Integer.MIN_VALUE;
         int[][] emptyFields = board.getEmptyFields();
         for (int i = 0; i < emptyFields.length; i++){
             board.getBoard()[emptyFields[i][0]][emptyFields[i][1]] = true;
-            int nodeValue = board.getPoints(emptyFields[i][0], emptyFields[i][1]);
-            int value = minValue(maxDepth - 1, nodeValue + playerScore, enemyScore, a, b);
-            if (value > maxValue) {
-                maxValue = value;
-                if (value > a) {
-                    a = value;
+            int currentNodeVal = board.getPoints(emptyFields[i][0], emptyFields[i][1]);
+            int tmpValue = minValue(maxDepth - 1, currentNodeVal + player1points, player2points, alpha, beta);
+            if (tmpValue > bestMaxValue) {
+                bestMaxValue = tmpValue;
+                if (tmpValue > alpha) {
+                    alpha = tmpValue;
                 }
             }
             board.getBoard()[emptyFields[i][0]][emptyFields[i][1]] = false;
-
-            if (value > b) {
+            if (tmpValue >= beta) {
                 break;
             }
         }
-        return maxValue;
+        return bestMaxValue;
     }
 
-    private int minValue(int maxDepth, int playerScore, int enemyScore, int aRoot, int bRoot) {
+    private int minValue(int maxDepth, int player1points, int player2points, int alpha, int beta) {
         if (maxDepth == 0 || board.isFull()) {
-            return playerScore - enemyScore;
+            return player1points - player2points;
         }
-        int a = aRoot;
-        int b = bRoot;
-        int minValue = Integer.MAX_VALUE;
+        int bestMinValue = Integer.MAX_VALUE;
         int[][] emptyFields = board.getEmptyFields();
         for (int i = 0; i < emptyFields.length; i++){
             board.getBoard()[emptyFields[i][0]][emptyFields[i][1]] = true;
-            int nodeValue =  board.getPoints(emptyFields[i][0], emptyFields[i][1]);
-            int value = maxValue(maxDepth - 1, playerScore, enemyScore + nodeValue, a, b);
-            if (value < minValue) {
-                minValue = value;
-                if (value < b) {
-                    b = value;
+            int currentNodeVal =  board.getPoints(emptyFields[i][0], emptyFields[i][1]);
+            int tmpValue = maxValue(maxDepth - 1, player1points, player2points + currentNodeVal, alpha, beta);
+            if (tmpValue < bestMinValue) {
+                bestMinValue = tmpValue;
+                if (tmpValue < beta) {
+                    beta = tmpValue;
                 }
             }
             board.getBoard()[emptyFields[i][0]][emptyFields[i][1]] = false;
-
-            if (value < a) {
+            if (tmpValue <= alpha) {
                 break;
             }
         }
-        return minValue;
+        return bestMinValue;
     }
 
-
-    public int[] move() {//parametry bez znaczenia
+    public int[] move() {
         int[] positions = alphaBeta();
         int points = board.putAndGetNewPoints(positions[0], positions[1]);
-        if (points > 0) { // Punkty dodane
+        if (points > 0) {
             addPoints(points);
         }
         return positions;

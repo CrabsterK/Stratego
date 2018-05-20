@@ -4,7 +4,6 @@ import com.si.player.AlphaBetaPlayer;
 import com.si.player.HumanPlayer;
 import com.si.player.MinMaxPlayer;
 import com.si.player.Player;
-
 import java.awt.*;
 import java.util.Scanner;
 
@@ -102,7 +101,6 @@ public class Game {
         }
 
     }
-
 
     boolean goAll = true;
     public void run(int[] positions) {//to wywołuję z gui

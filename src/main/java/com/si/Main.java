@@ -1,17 +1,13 @@
 package com.si;
 
-import com.si.player.AlphaBetaPlayer;
-import com.si.player.HumanPlayer;
-import com.si.player.MinMaxPlayer;
-import com.si.player.Player;
+import com.si.player.*;
 
 public class Main {
     public static void main(String[] args) {
         final int BOARD_SIZE = 6;
         final int DEPTH = 5;
         boolean enableGui = true;
-        boolean player1MoveFirst = false;
-
+        boolean player1MoveFirst = true;
 
         Board board = new Board(BOARD_SIZE);
         Player player1 = new MinMaxPlayer(DEPTH, true, false);
@@ -20,8 +16,10 @@ public class Main {
         Player player4 = new HumanPlayer();
         Player player5 = new AlphaBetaPlayer(DEPTH, true, false);
         Player player6 = new AlphaBetaPlayer(DEPTH, false, true);
+        Player player7 = new RandomPlayer();
+        Player player8 = new RandomPlayer();
 
-        Game game = new Game(player5, player6, BOARD_SIZE, board, enableGui, player1MoveFirst);
+        Game game = new Game(player2, player1, BOARD_SIZE, board, enableGui, player1MoveFirst);
         game.runGame();
 
 

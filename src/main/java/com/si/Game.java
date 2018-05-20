@@ -1,9 +1,7 @@
 package com.si;
 
-import com.si.player.AlphaBetaPlayer;
-import com.si.player.HumanPlayer;
-import com.si.player.MinMaxPlayer;
-import com.si.player.Player;
+import com.si.player.*;
+
 import java.awt.*;
 import java.util.Scanner;
 
@@ -57,6 +55,9 @@ public class Game {
                     if (player1 instanceof AlphaBetaPlayer){
                         ((AlphaBetaPlayer) player1).move();
                     }
+                    if (player1 instanceof RandomPlayer){
+                        ((RandomPlayer) player1).move();
+                    }
                     if (player1 instanceof HumanPlayer){
                         System.out.println("x: ");
                         int playerX = sc.nextInt();
@@ -73,6 +74,9 @@ public class Game {
                     }
                     if (player2 instanceof AlphaBetaPlayer){
                         ((AlphaBetaPlayer) player2).move();
+                    }
+                    if (player2 instanceof RandomPlayer){
+                        ((RandomPlayer) player2).move();
                     }
                     if (player2 instanceof HumanPlayer) {
                         System.out.println("x: ");
@@ -103,7 +107,7 @@ public class Game {
     }
 
     boolean goAll = true;
-    public void run(int[] positions) {//to wywołuję z gui
+    public void run(int[] positions) {//to wywołuję z gui, coś z human
             int[] toMark;
 
             if (player1MoveFirst) {
@@ -122,8 +126,12 @@ public class Game {
                     g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
                     g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
                 }
+                if (player1 instanceof RandomPlayer) {
+                    toMark = ((RandomPlayer) player1).move();//move już go kłądzie
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+                }
                 if (player1 instanceof HumanPlayer) {
-                    System.out.println("pl1");
                     ((HumanPlayer) player1).move(positions[0], positions[1]);
                 }
 
@@ -138,8 +146,12 @@ public class Game {
                     g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
                     g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
                 }
+                if (player2 instanceof RandomPlayer) {
+                    toMark = ((RandomPlayer) player2).move();
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+                }
                 if (player2 instanceof HumanPlayer) {
-                    System.out.println("pl2");
                     ((HumanPlayer) player2).move(positions[0], positions[1]);
                 }
             }
@@ -241,6 +253,70 @@ public class Game {
         }
     }
 
+    public void runRvsR() {//to wywołuję z gui
+        while (!board.isFull()) {
+            int[] toMark;
+            if(player1MoveFirst) {
+                toMark = ((RandomPlayer) player1).move();//move już go kłądzie
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            else {
+                toMark = ((RandomPlayer) player2).move();
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            player1MoveFirst = !player1MoveFirst;
+            board.print();
+            System.out.println("pkt1: " + player1.getPoints());
+            System.out.println("pkt2: " + player2.getPoints());
+            System.out.println();
+        }
+    }
+
+    public void runRvsA() {//to wywołuję z gui
+        while (!board.isFull()) {
+            int[] toMark;
+            if(player1MoveFirst) {
+                toMark = ((RandomPlayer) player1).move();//move już go kłądzie
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            else {
+                toMark = ((AlphaBetaPlayer) player2).move();
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            player1MoveFirst = !player1MoveFirst;
+            board.print();
+            System.out.println("pkt1: " + player1.getPoints());
+            System.out.println("pkt2: " + player2.getPoints());
+            System.out.println();
+        }
+    }
+
+    public void runRvsM() {//to wywołuję z gui
+        while (!board.isFull()) {
+            int[] toMark;
+            if(player1MoveFirst) {
+                toMark = ((RandomPlayer) player1).move();//move już go kłądzie
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            else {
+                toMark = ((MinMaxPlayer) player2).move();
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            player1MoveFirst = !player1MoveFirst;
+            board.print();
+            System.out.println("pkt1: " + player1.getPoints());
+            System.out.println("pkt2: " + player2.getPoints());
+            System.out.println();
+        }
+    }
+
+
     public void runGame() {
         if (enableGui){
             g = new GameWindow("Game", BOARD_SIZE, this);
@@ -257,6 +333,15 @@ public class Game {
             }
             if (player1 instanceof MinMaxPlayer && player2 instanceof AlphaBetaPlayer) {
                 runMvsAB();
+            }
+            if (player1 instanceof RandomPlayer && player2 instanceof RandomPlayer) {
+                runRvsR();
+            }
+            if (player1 instanceof RandomPlayer && player2 instanceof AlphaBetaPlayer) {
+                runRvsA();
+            }
+            if (player1 instanceof RandomPlayer && player2 instanceof MinMaxPlayer) {
+                runRvsM();
             }
         }
         else {

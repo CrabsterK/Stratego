@@ -1,11 +1,10 @@
 package com.si;
 
-import com.si.Board;
-import com.si.GameWindow;
 import com.si.player.HumanPlayer;
 import com.si.player.MinMaxPlayer;
 import com.si.player.Player;
 
+import java.awt.*;
 import java.util.Scanner;
 
 public class Game {
@@ -90,19 +89,97 @@ public class Game {
     }
 
 
-
+    boolean goAll = true;
     public void run(int[] positions) {//to wywołuję z gui
+            int[] toMark;
+
+            if (player1MoveFirst) {
+                System.out.println("Ruch gracza I");
+            } else {
+                System.out.println("Ruch gracza II");
+            }
+            if (player1MoveFirst) {
+                if (player1 instanceof MinMaxPlayer) {
+                    toMark = ((MinMaxPlayer) player1).move();//move już go kłądzie
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+                }
+                if (player1 instanceof HumanPlayer) {
+                    ((HumanPlayer) player1).move(positions[0], positions[1]);
+                }
+
+            } else {
+                if (player2 instanceof MinMaxPlayer) {
+                    toMark = ((MinMaxPlayer) player2).move();
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                    g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+                }
+                if (player2 instanceof HumanPlayer) {
+                    ((HumanPlayer) player2).move(positions[0], positions[1]);
+                }
+            }
+            player1MoveFirst = !player1MoveFirst;
+            if (!board.isFull() && goAll){// działa tylko jeśli pierwszy ruch to human
+                goAll = false;
+                run(positions);
+            }
+            goAll = true;
+            board.print();
+            System.out.println("pkt1: " + player1.getPoints());
+            System.out.println("pkt2: " + player2.getPoints());
+            System.out.println();
+
+
+
+
+
+      /*  int[] toMark;
         if (player1MoveFirst){
-            //      player1.move(positions[0], positions[1]);
+            if (player1 instanceof MinMaxPlayer) {
+                toMark = ((MinMaxPlayer) player1).move();//move już go kłądzie
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            if (player1 instanceof HumanPlayer) {
+                ((HumanPlayer) player1).move(positions[0], positions[1]);
+            }
         }
         else {
-            //       player2.move(positions[0], positions[1]);
+            if (player2 instanceof MinMaxPlayer) {
+                toMark = ((MinMaxPlayer) player2).move();
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            if (player2 instanceof HumanPlayer) {
+                ((HumanPlayer) player2).move(positions[0], positions[1]);
+            }
         }
         player1MoveFirst = !player1MoveFirst;
         board.print();
         System.out.println("pkt1: " + player1.getPoints());
         System.out.println("pkt2: " + player2.getPoints());
-        System.out.println();
+        System.out.println();*/
+    }
+
+    public void runMvsM() {//to wywołuję z gui
+        while (!board.isFull()) {
+            int[] toMark;
+            if(player1MoveFirst) {
+                toMark = ((MinMaxPlayer) player1).move();//move już go kłądzie
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            else {
+                toMark = ((MinMaxPlayer) player2).move();
+                g.getBoardGrid()[toMark[0]][toMark[1]].setBackground(Color.BLUE);
+                g.getBoardGrid()[toMark[0]][toMark[1]].setSelected(true);
+            }
+            player1MoveFirst = !player1MoveFirst;
+            board.print();
+            System.out.println("pkt1: " + player1.getPoints());
+            System.out.println("pkt2: " + player2.getPoints());
+            System.out.println();
+        }
     }
 
     public void runGame() {
@@ -110,6 +187,9 @@ public class Game {
             g = new GameWindow("Game", BOARD_SIZE, this);
             g.setVisible(true);
             g.setSize(500, 500);
+            if (player1 instanceof MinMaxPlayer && player2 instanceof MinMaxPlayer) {
+                runMvsM();
+            }
         }
         else {
             run();

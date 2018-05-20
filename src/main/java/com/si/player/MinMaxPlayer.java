@@ -14,10 +14,12 @@ public class MinMaxPlayer extends Player {
         this.depthUse = depth;
     }
 
+    @Override
     public void setBoard(Board board){
         this.board = board;
     }
 
+    @Override
     public int getPoints(){
         return points;
     }
@@ -90,8 +92,12 @@ public class MinMaxPlayer extends Player {
 
 
 
-    public void move() {//parametry bez znaczenia
+    public int[] move() {//parametry bez znaczenia
         int[] positions = minmax();
-        board.putAndGetNewPoints(positions[0], positions[1]);
+        int points = board.putAndGetNewPoints(positions[0], positions[1]);
+        if (points > 0) { // Punkty dodane
+            addPoints(points);
+        }
+        return positions;
     }
 }

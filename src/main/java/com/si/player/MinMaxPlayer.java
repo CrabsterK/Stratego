@@ -12,6 +12,7 @@ public class MinMaxPlayer extends Player {
     private int depthUse;
     private boolean cornerHeuristic;
     private boolean middleHeuristic;
+    private long time = 0;
 
 
     public MinMaxPlayer(int depth, boolean cornerHeuristic, boolean middleHeuristic){
@@ -35,6 +36,11 @@ public class MinMaxPlayer extends Player {
     @Override
     public void addPoints(int pointsToAdd){
         this.points += pointsToAdd;
+    }
+
+    @Override
+    public long getTime() {
+        return time;
     }
 
     private int[][] sortMiddleWorst(int[][] emptyFields){
@@ -129,11 +135,14 @@ public class MinMaxPlayer extends Player {
     }
 
     public int[] move() {
+        long startTime = System.currentTimeMillis();
         int[] positions = minmax();
         int points = board.putAndGetNewPoints(positions[0], positions[1]);
         if (points > 0) {
             addPoints(points);
         }
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        time += estimatedTime;
         return positions;
     }
 }

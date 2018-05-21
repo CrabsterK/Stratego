@@ -7,6 +7,7 @@ import java.util.Random;
 public class RandomPlayer extends Player {
     public int points;
     public Board board;
+    private long time = 0;
 
     public RandomPlayer() {
         this.points = 0;
@@ -27,6 +28,11 @@ public class RandomPlayer extends Player {
         this.points += pointsToAdd;
     }
 
+    @Override
+    public long getTime() {
+        return time;
+    }
+
     private int[] random() {
         int random[] = new int[2];
         int[][] emptyFields = board.getEmptyFields();
@@ -38,11 +44,14 @@ public class RandomPlayer extends Player {
     }
 
     public int[] move() {
+        long startTime = System.currentTimeMillis();
         int[] positions = random();
         int points = board.putAndGetNewPoints(positions[0], positions[1]);
         if (points > 0) {
             addPoints(points);
         }
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        time += estimatedTime;
         return positions;
     }
 }

@@ -13,6 +13,7 @@ public class AlphaBetaPlayer extends Player{
     private int depthUse;
     private boolean cornerHeuristic;
     private boolean middleHeuristic;
+    private long time = 0;
 
     public AlphaBetaPlayer(int depth, boolean cornerHeuristic, boolean middleHeuristic){
         this.points = 0;
@@ -35,6 +36,10 @@ public class AlphaBetaPlayer extends Player{
     @Override
     public void addPoints(int pointsToAdd){
         this.points += pointsToAdd;
+    }
+
+    public long getTime() {
+        return time;
     }
 
     private int[][] sortMiddleWorst(int[][] emptyFields){
@@ -143,11 +148,14 @@ public class AlphaBetaPlayer extends Player{
     }
 
     public int[] move() {
+        long startTime = System.currentTimeMillis();
         int[] positions = alphaBeta();
         int points = board.putAndGetNewPoints(positions[0], positions[1]);
         if (points > 0) {
             addPoints(points);
         }
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        time += estimatedTime;
         return positions;
     }
 }
